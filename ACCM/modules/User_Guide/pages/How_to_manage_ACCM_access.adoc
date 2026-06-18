@@ -19,13 +19,13 @@ The generated access token must be included in the HTTP header as a Bearer authe
 any {app-short-name} operation through the {app-short-name} REST APIs.
 ====
 
-==== Authenticating as an altiplano admin
+=== Authenticating as an altiplano admin
 The token can be retrieved using the following information:
 
 - Altiplano's admin username
 - Altiplano's admin password
 
-===== Get Token using CURL
+==== Get Token using CURL
 
 .Usage
 [source, bash, subs=attributes]
