@@ -1,0 +1,46 @@
+include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
+
+= How to Manage {app-short-name} access
+
+== Introduction
+
+This section provides the steps required to authenticate to the {app-short-name}.
+
+To perform any operation on the {app-short-name}, you must be previously authenticated using
+altiplano user credentials.
+
+== How to Authenticate
+
+To authenticate and use {app-short-name} REST APIs, an access token is required.
+
+[NOTE]
+====
+The generated access token must be included in the HTTP header as a Bearer authentication header when executing
+any {app-short-name} operation through the {app-short-name} REST APIs.
+====
+
+==== Authenticating as an altiplano admin
+The token can be retrieved using the following information:
+
+- Altiplano's admin username
+- Altiplano's admin password
+
+===== Get Token using CURL
+
+.Usage
+[source, bash, subs=attributes]
+----
+curl --location --request POST 'https://IP_ALTIPLANO/nokia-altiplano-ac/rest/auth/login' \
+--header 'Authorization: Basic USERNAME:PASSWORD ENCODED IN BASE64' \
+--data ''
+----
+
+.Example
+[source, bash, subs=attributes]
+----
+curl --location --request POST 'https://100.121.38.81/nokia-altiplano-ac/rest/auth/login' \
+--header 'Authorization: Basic YWRtaW51c2VyOnBhc3N3b3Jk' \
+--data ''
+----
+
+include::ROOT:go-back-component.adoc[Back]

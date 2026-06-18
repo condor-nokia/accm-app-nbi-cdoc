@@ -1,0 +1,247 @@
+include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
+
+= How to monitor campaign progress
+
+== Introduction
+
+This section provides the steps required to monitor the progress of the campaigns.
+
+[NOTE]
+====
+Before monitoring the progress, you must be authenticated to the {app-short-name} as an altiplano user.
+Refer to xref:User_Guide:How_to_manage_ACCM_access.adoc[How to Manage {app-short-name} access] section for more details.
+====
+
+== Monitor the progress of a campaign
+
+To get the progress of a campaign using the {app-short-name} REST API you must execute the following step:
+
+. Send a GET request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>/progress[https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>/progress,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
++
+Body::
+The request body must be empty.
++
+For example:: A GET request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/c1/progress
+
+=== Response example
+
+[source, json]
+----
+{
+    "name": "c1",
+    "status": "NotScheduled",
+    "clusters": [
+        {
+            "clusterName": "LSN-FX16.2MF2",
+            "totalElements": 3,
+            "updatedElements": 0,
+            "status": "NotScheduled",
+            "progress": 0.0,
+            "elements": [
+                {
+                    "elementType": "Headend",
+                    "elements": [
+                        {
+                            "name": "Subtended-CPLeaf",
+                            "status": "NotScheduled",
+                            "progress": 0.0
+                        }
+                    ]
+                },
+                {
+                    "elementType": "RemoteOLT",
+                    "elements": [
+                        {
+                            "name": "Subtended-MF21",
+                            "status": "NotScheduled",
+                            "progress": 0.0
+                        },
+                        {
+                            "name": "Subtended-MF22",
+                            "status": "NotScheduled",
+                            "progress": 0.0
+                        }
+                    ]
+                }
+            ],
+            "executionSteps": [
+                {
+                    "name": "Download",
+                    "status": "NotScheduled"
+                },
+                {
+                    "name": "Upgrade Headend",
+                    "status": "NotScheduled"
+                },
+                {
+                    "name": "Upgrade RemoteOLT batch 1",
+                    "status": "NotScheduled"
+                },
+                {
+                    "name": "Upgrade RemoteOLT batch 2",
+                    "status": "NotScheduled"
+                },
+                {
+                    "name": "Rollback",
+                    "status": "NotScheduled"
+                }
+            ]
+        }
+    ],
+    "totalElements": 3,
+    "updatedElements": 0,
+    "progress": 0.0
+}
+
+----
+
+==== Response schemas
+
+===== CampaignProgressSchema
+[cols="1,1,2", options="header"]
+|===
+| Attribute | Type | Description
+| name | string | Campaign name
+| status | Status | Current status for campaign
+| total-elements | int | Elements to be updated (sum of all cluster elements)
+| updated-elements | int | Current elements updated (sum of all updated cluster elements)
+| progress | float | Relation in percent between total and updated
+| clusters | Array<ClusterProgressSchema> | List of associated clusters for the campaign and their current progress
+|===
+
+===== ClusterProgressSchema
+[cols="1,1,2", options="header"]
+|===
+| Attribute | Type | Description
+| cluster-name | string | Cluster name
+| status | Status | Current status for cluster
+| totalElements | int | Elements to be updated
+| updatedElements | int | Current elements updated
+| progress | float | Relation in percent between total and updated
+| elements | Array<ClusterElementTypeProgress> | List of element types for a cluster
+| executionSteps | Array<ExecutionStepSchema> | List of steps (activities on Altiplano) and their status.
+|===
+
+===== ClusterElementTypeProgress
+[cols="1,1,2", options="header"]
+|===
+| Attribute | Type | Description
+| elementType | string | Classification of the element within the cluster topology. For Leaf/Spine clusters, the element types are Spine, CP Leaves, Access Leaves, and ONTs. For Standalone clusters, the element types are Headend OLT, Remote OLT, and ONTs. The ONT element types will only be available for campaigns associated with an "ONT Only” software matrix.
+| elements | Array<ClusterElementProgress> | List of elements (devices or ONTs) belonging to the cluster's elementType.
+|===
+
+===== ClusterElementProgress
+[cols="1,1,2", options="header"]
+|===
+| Attribute | Type | Description
+| name | string | Element’s name (device or ONT)
+| status | Status | Status for the element (Content provided through Altiplano's statusPerDevice endpoint.)
+| progress | float | Value obtained through Altiplano's statusPerDevice endpoint.
+|===
+
+===== ExecutionStepSchema
+[cols="1,1,2", options="header"]
+|===
+| Attribute | Type | Description
+| name | String | Name of the execution step
+| status | Status | Current status of the execution step.
+|===
+
+===== Status (Enum)
+*Type:* string
+
+* NotScheduled
+* Scheduled
+* Executing
+* Success
+* Error
+* ExecutingRollback
+* RollBacked
+* RollBackError
+* Canceled
+
+== Statuses Overview
+Status tracking operates hierarchically: element statuses determine the overall cluster state, which in turn aggregates to define the overarching campaign lifecycle state.
+
+=== Campaign States
+The campaign status provides a high-level overview of the entire automated update process:
+
+* *Scheduled*: The campaign has been successfully defined and queued with specific future dates for software download and update execution.
+* *Not Scheduled*: The campaign has been saved into the system but does not have execution dates configured, requiring a manual trigger to start.
+* *Executing*: The campaign is actively running its orchestration workflows across the associated clusters.
+* *Success*: The software update has completed successfully across all elements in all targeted clusters.
+* *Executing Rollback*: The system is actively reverting one or more elements back to their previous software versions.
+* *Canceled*: An executing campaign was manually stopped by an operator, halting further updates.
+* *Error*: The execution failed during deployment (e.g., due to an activity failing on Altiplano, or some post-check verification).
+* *Rollback Error*: A failure occurred while trying to execute a software rollback on an element.
+* *Rolled back*: The rollback process has finished successfully, and the selected elements from one or more clusters have been reverted completely to their previous software version.
+
+image::CAMPAIGNSSection_campaignStates.png[align="center"]
+
+=== Cluster States
+Their statuses are calculated dynamically based on non-excluded components.
+
+* *Scheduled / Not Scheduled*: Inherited from the initial campaign state before orchestration begins.
+* *Executing*: The cluster is actively walking through its designated sequence of upgrade activities and automated post-check verifications.
+* *Success*: All eligible network elements within the cluster layer have been upgraded and verified successfully.
+* *Executing Rollback*: One or more elements within the cluster are currently undergoing a software rollback.
+* *Canceled*: The cluster orchestration was halted midway due to a campaign cancellation.
+* *Error*: The upgrade or a post-check verification failed for a specific device batch, halting the process for that entire cluster.
+* *Rollback Error*: A failure occurred while trying to execute a software rollback on an element.
+* *Rolled back*: The rollback process has finished successfully, and the selected elements have been reverted completely to their previous software version.
+
+image::CAMPAIGNSSection_clusterStates.png[align="center"]
+
+== REST Error Responses
+.Error response
+[source,json]
+----
+{
+  "timestamp": {isoDateTimestamp},
+  "operationName": {operationName},
+  "serviceName": {serviceName},
+  "errorCode": {errorCode},
+  "message": {message},
+  "detail": []
+}
+----
+
+=== ACCM-AC-0001
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+Internal error
+
+==== Description
+This error is thrown when any anomalous runtime situation occurs that was not contemplated. To avoid exposing an unhandled root cause, it is wrapped in a generic error of this type. The situations in which it is generated cannot be changed by the operator and need to be reported.
+
+=== ACCM-AC-0004
+
+==== HTTP error code
+401 Unauthorized
+
+==== Message
+Access token is not valid anymore
+
+==== Description
+When the authorization token is invalid and must be updated
+
+=== ACCM-AC-0011
+
+==== HTTP error code
+404 Not found
+
+==== Message
+Campaign \{campaignName} does not exist.
+
+==== Description
+When attempting to retrieve the campaign for update, detail, or action services, and it does not exist.
+
+include::ROOT:go-back-component.adoc[Back]

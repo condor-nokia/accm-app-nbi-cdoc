@@ -1,0 +1,479 @@
+include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
+
+= How to configure Campaigns
+
+== Introduction
+
+This section provides the steps required to manage the campaigns in the {app-short-name}.
+
+[NOTE]
+====
+Before managing campaigns, you must be authenticated to the {app-short-name} as an altiplano user.
+Refer to xref:User_Guide:How_to_manage_ACCM_access.adoc[How to Manage {app-short-name} access] section for more details.
+====
+
+== Create Campaign
+To create a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a POST request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaigns[https://{altiplano-host}/{accm-api-context}/campaigns,window=_blank]
++
+Body::
++
+The request must contain the following JSON body:
++
+[source, json]
+----
+{
+    "name": "{campaignName}",
+    "softwareMatrixName": "{swMatrixName}",
+    "downloadDate": "{downloadDate}",
+    "updateDate": "{updateDate}",
+    "clusters" : [
+        {
+            "clusterName": "{clusterName}",
+            "excludedElements": "{excludedElementsList}",
+            "includedElements": "{includedElementsList}"
+        }
+    ]
+}
+----
+- *name:* _(string)_ Name that identifies the campaign.
+- *softwareMatrixName:* _(string)_ Name that identifies the software matrix to be installed on cluster elements.
+- *downloadDate (optional):* _(date-time)_ Specific date and time for the software download to the devices. Must be in the future and before updateDate.
+- *updateDate (optional):* _(date-time)_ Specific date and time for the start of the campaign's execution. Must be in the future and after downloadDate.
+- *clusters*: List of clusters to include in the campaign. Must select at least one. +
+Each cluster element is composed by: +
+* *clusterName*: _(string)_ Name of the cluster
+* *excludedElements (optional)*: _(array)_ List of specific element names to exclude from the update within this cluster. Only applicable when selected Target solution type is Device or Devices and all its ONTs.
+* *includedElements (optional)*: _(array)_ List of names of the elements whose ONTs will be updated. Only applicable when selected Target solution type is ONTs only. (To upgrade all ONTs under the cluster, this param must not be included).
+
+For example - Example 1:: If you want to create a campaign for the cluster "LSN", a POST request with body must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns
++
+[source, json]
+----
+{
+    "name": "campaign1",
+    "softwareMatrixName": "device_type_sm",
+    "downloadDate": "2026-01-28T10:00:00",
+    "updateDate": "2026-01-28T12:00:00",
+    "clusters": [
+      {
+        "clusterName": "LSN"
+      }
+    ]
+}
+----
+
+For example - Example 2:: If you want to create a campaign for the cluster "LSN", excluding the element "FX16-Device-Test-B", a POST request with body must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns
++
+[source, json]
+----
+{
+    "name": "campaign2",
+    "softwareMatrixName": "device_type_sm",
+    "downloadDate": "2026-01-28T10:00:00",
+    "updateDate": "2026-01-28T12:00:00",
+    "clusters": [
+      {
+        "clusterName": "LSN",
+        "excludedElements": ["FX16-Device-Test-B"]
+      }
+    ]
+}
+----
+
+For example - Example 3:: If you want to create a campaign for the cluster "LSN", including the element "FX16-Device-Test-B", a POST request with body must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns
++
+[source, json]
+----
+{
+    "name": "campaign3",
+    "softwareMatrixName": "device_type_sm",
+    "downloadDate": "2026-01-28T10:00:00",
+    "updateDate": "2026-01-28T12:00:00",
+    "clusters": [
+      {
+        "clusterName": "LSN",
+        "excludedElements": [],
+        "includedElements": ["FX16-Device-Test-B"]
+      }
+    ]
+}
+----
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== Delete Campaign
+To delete a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a DELETE request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>[https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
++
+Body::
+The request body must be empty.
++
+For example:: A DELETE request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/campaign1
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== Get Campaign
+To get a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a GET request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>[https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
++
+Body::
+The request body must be empty.
++
+For example:: A GET request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/campaign1
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== Edit a Campaign
+To edit a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a PUT request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>[https://{altiplano-host}/{accm-api-context}/campaigns/<CAMPAIGN_NAME>,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the software matrix.
++
+Body::
+The request body must contain all the fields that were used in the campaign's creation except for the campaignName field.
+The value of all these fields can be modified. If any field is missing from the body request its value will be 'null'
++
+For example:: A PUT request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/campaign1
++
+[source, json]
+----
+{
+    "softwareMatrixName": "atp-st1-swm-device",
+    "downloadDate": "2026-04-17T12:00:00.000Z",
+    "updateDate": "2026-04-17T13:00:00.000Z",
+    "clusters" : [
+        {
+            "clusterName": "LSN-FX16.2MF2",
+            "excludedElements": ["Subtended-MF22"]
+        }
+    ]
+}
+----
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== REST Error Responses
+.Error response
+[source,json]
+----
+{
+  "timestamp": {isoDateTimestamp},
+  "operationName": {operationName},
+  "serviceName": {serviceName},
+  "errorCode": {errorCode},
+  "message": {message},
+  "detail": []
+}
+----
+
+=== ACCM-AC-0001
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+Internal error
+
+==== Description
+This error is thrown when any anomalous runtime situation occurs that was not contemplated. To avoid exposing an unhandled root cause, it is wrapped in a generic error of this type. The situations in which it is generated cannot be changed by the operator and need to be reported.
+
+=== ACCM-AC-0002
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+The parameter \{parameterName} is required
+
+==== Description
+When a required parameter is missing.
+
+=== ACCM-AC-0003
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+Invalid parameters
+
+==== Description
+When a parameter is invalid in its format or type. The validation detail is added as an additional field in the response.
+
+=== ACCM-AC-0004
+
+==== HTTP error code
+401 Unauthorized
+
+==== Message
+Access token is not valid anymore
+
+==== Description
+When the authorization token is invalid and must be updated
+
+=== ACCM-AC-0006
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} cannot be deleted because it is one of these states, Executing or ExecutingRollback.
+
+==== Description
+When the campaign to be deleted is in the Executing or ExecutingRollback status.
+
+=== ACCM-AC-0007
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+The campaign \{campaignName} cannot be deleted because there were errors to sync on Altiplano.
+
+==== Description
+When attempting to delete a campaign, and the Access Cluster Campaign Manager is unable to delete the associated campaigns in Altiplano.
+
+=== ACCM-AC-0008
+
+==== HTTP error code
+404 Not found
+
+==== Message
+The campaign \{campaignName} cannot be deleted because it was not found.
+
+==== Description
+The campaign to be deleted cannot be found by the given name.
+
+=== ACCM-AC-0009
+
+==== HTTP error code
+404 Not found
+
+==== Message
+The target solution \{targetSolutionName} does not exist.
+
+==== Description
+The target solution name sent as a parameter cannot be found in Altiplano.
+
+=== ACCM-AC-0010
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+Campaign \{campaignName} already exists.
+
+==== Description
+A campaign with the name intended for the new one already exists.
+
+=== ACCM-AC-0011
+
+==== HTTP error code
+404 Not found
+
+==== Message
+Campaign \{campaignName} does not exist.
+
+==== Description
+When attempting to retrieve the campaign for update, detail, or action services, and it does not exist.
+
+=== ACCM-AC-0016
+
+==== HTTP error code
+404 Not found
+
+==== Message
+Cluster \{clusterName} does not exist in Altiplano.
+
+==== Description
+When the cluster name provided as a parameter for campaign creation or update does not exist in Altiplano.
+
+=== ACCM-AC-0017
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+Software matrix type \{swMatrixType} not supported. Must be ONT, Device or Device-ONT.
+
+==== Description
+When the software matrix intended for campaign creation or update is not of the specified types.
+
+=== ACCM-AC-0018
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} already exists in Altiplano.
+
+==== Description
+An Access Cluster Campaign Manager (ACCM) campaign creates a corresponding campaign in Altiplano for each associated cluster. The name of the campaigns created in Altiplano is composed of the ACCM campaign name plus the cluster name. This error is triggered when that specific combination already exists as an Altiplano campaign name.
+
+=== ACCM-AC-0021
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+The combination of campaign name \{campaignName} and cluster name \{clusterName} exceeds the \{maxCaracthersAllowed} characters limit.
+
+==== Description
+When the combination of the campaign name and the cluster name exceeds \{maxCaracthersAllowed} characters, plus the 12 characters required for the naming scheme of activities created in Altiplano, the total exceeds the character limit allowed by Altiplano for activity names.
+
+=== ACCM-AC-0022
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+None of the device-types selected on software-matrix are present in cluster. Nothing to update.
+
+==== Description
+When the cluster does not contain any of the device types defined in the software matrix. In this case, no updates would be performed.
+
+=== ACCM-AC-0024
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+Internal error when trying to create campaign \{campaignName} in Altiplano. Local database rolled back, but some campaigns may have been created in Altiplano (Inconsistency).
+
+==== Description
+When an error occurs during the process of creating or updating campaigns and associated activities in Altiplano. This may cause inconsistencies between the two applications, and any campaigns that may have been created in Altiplano must be manually deleted by the operator.
+
+=== ACCM-AC-0026
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} cannot be updated in this state, it must be either Scheduled or NotScheduled and is \{campaignStatus}.
+
+==== Description
+The campaign cannot be updated if it is not in the Scheduled or NotScheduled state. Any other status will trigger this error.
+
+=== ACCM-AC-0027
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+No connection could be established with Altiplano. Local changes rolled back.
+
+==== Description
+When a connection to Altiplano cannot be established to create the associated campaigns.
+
+=== ACCM-AC-0028
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+The cluster \{clusterName} was specified more than once in the clusters' list. Each cluster must be specified only once.
+
+==== Description
+The cluster was declared more than once in the cluster list when attempting to create or update a campaign.
+
+=== ACCM-AC-0029
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+There is another campaign containing the cluster \{clusterName} already scheduled to download at \{date}
+
+==== Description
+Another campaign already exists with the same associated cluster and the same download date.
+
+=== ACCM-AC-0030
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+There is another campaign containing the cluster \{clusterName} already scheduled to update at \{date}
+
+==== Description
+Another campaign already exists with the same associated cluster and the same update date.
+
+=== ACCM-AC-0031
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+Unfinished Campaign creation in Altiplano. Campaign \{campaignName} was created locally with 'Error' status. Cause: \{cause}.
+
+==== Description
+The campaign and its associated campaigns in Altiplano were successfully created, but the Altiplano campaign activities could not be created. The campaign remains in an 'Error' state within the Access Cluster Campaign Manager and can be removed using the deletion service.
+
+=== ACCM-AC-0032
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+Cluster \{clusterName}: Included list and excluded list cannot be at the same time.
+
+==== Description
+For each cluster, either an inclusion list or an exclusion list can be defined, but not both at once.
+
+=== ACCM-AC-0038
+
+==== HTTP error code
+400 Bad Request
+
+==== Message
+The cluster \{clusterName} does not have any ONT devices available for update.
+
+==== Description
+When the specified cluster does not contain any eligible ONT devices that can receive the software update.
+
+=== ACCM-AC-0041
+
+==== HTTP error code
+404 Not found
+
+==== Message
+Element \{elementName} cannot be [included\|excluded] since is not present in cluster: \{clusterName}.
+
+==== Description
+When attempting to explicitly include or exclude an element that does not belong to the specified cluster.
+
+include::ROOT:go-back-component.adoc[Back]

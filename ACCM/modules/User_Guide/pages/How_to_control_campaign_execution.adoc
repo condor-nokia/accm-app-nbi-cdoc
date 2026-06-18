@@ -1,0 +1,238 @@
+include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
+
+= How to control Campaigns execution
+
+== Introduction
+
+This section provides the steps required to control the execution of campaigns.
+
+[NOTE]
+====
+Before managing campaigns, you must be authenticated to the {app-short-name} as an altiplano user.
+Refer to xref:User_Guide:How_to_manage_ACCM_access.adoc[How to Manage {app-short-name} access] section for more details.
+====
+
+== Manual start
+To manually start a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a POST request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/manual-start[https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/manual-start,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
++
+Body::
++
+The request must contain the following JSON body:
++
+For example:: A POST request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaign-manager-api/campaigns/campaign1/manual-start
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== Cancel
+To cancel a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a CANCEL request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/cancel[https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/cancel,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
++
+Body::
++
+The request must contain the following JSON body:
++
+For example:: A CANCEL request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaign-manager-api/campaigns/campaign1/cancel
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== Retry
+To retry a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a POST request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/retry[https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/retry,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
++
+Body::
++
+The request must contain the following JSON body:
++
+For example:: A POST request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaign-manager-api/campaigns/campaign1/retry
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== Rollback
+To rollback a campaign using the {app-short-name} REST API, you must execute the following step:
+
+. Send a POST request to the following URL:
+link:https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/clusters/<CLUSTER_NAME>/elements/<ELEMENT_NAME>/rollback[https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/clusters/<CLUSTER_NAME>/elements/<ELEMENT_NAME>/rollback,window=_blank]
++
+Path Variable::
++
+* *CAMPAIGN_NAME*: It is the string that identifies the campaign.
+* *CLUSTER_NAME*: It is the string that identifies the cluster.
+* *ELEMENT_NAME*: It is the string that identifies the element to be rolled back.
++
+Body::
++
+The request must contain the following JSON body:
++
+For example:: A POST request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaign-manager-api/campaigns/campaign1/clusters/LSN/elements/Condor_Spine1/rollback
+
+[NOTE]
+====
+The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
+To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
+====
+
+== REST Error Responses
+.Error response
+[source,json]
+----
+{
+  "timestamp": {isoDateTimestamp},
+  "operationName": {operationName},
+  "serviceName": {serviceName},
+  "errorCode": {errorCode},
+  "message": {message},
+  "detail": []
+}
+----
+
+=== ACCM-AC-0001
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+Internal error
+
+==== Description
+This error is thrown when any anomalous runtime situation occurs that was not contemplated. To avoid exposing an unhandled root cause, it is wrapped in a generic error of this type. The situations in which it is generated cannot be changed by the operator and need to be reported.
+
+=== ACCM-AC-0004
+
+==== HTTP error code
+401 Unauthorized
+
+==== Message
+Access token is not valid anymore
+
+==== Description
+When the authorization token is invalid and must be updated
+
+=== ACCM-AC-0011
+
+==== HTTP error code
+404 Not found
+
+==== Message
+Campaign \{campaignName} does not exist.
+
+==== Description
+When attempting to retrieve the campaign for update, detail, or action services, and it does not exist.
+
+=== ACCM-AC-0033
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} cannot be manually started in its current state, it must be either Scheduled or NotScheduled and is \{status}.
+
+==== Description
+The campaign cannot be started manually if it is not in the Scheduled or NotScheduled state.
+
+=== ACCM-AC-0034
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} cannot be cancelled in its current state, it must be Executing and is \{status}.
+
+==== Description
+The campaign can only be canceled if it is in the Executing state.
+
+=== ACCM-AC-0035
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+The campaign \{campaignName} could not be canceled. Altiplano error response: \{response}
+
+==== Description
+The executing activities in Altiplano could not be canceled; therefore, the campaign cannot be canceled.
+
+=== ACCM-AC-0036
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} cannot be retried in its current state, it must be either RollbackError, Canceled or Error and is \{status}.
+
+==== Description
+When attempting to retry a campaign that is not in a retryable state (must be RollbackError, Canceled, or Error).
+
+=== ACCM-AC-0037
+
+==== HTTP error code
+500 Internal server error
+
+==== Message
+Cannot execute rollback on element \{elementName} for campaign \{campaignName}. Altiplano response: \{errorResponse}
+
+==== Description
+When the system fails to trigger the rollback process for a specific element in Altiplano due to an API error.
+
+=== ACCM-AC-0039
+
+==== HTTP error code
+404 Not found
+
+==== Message
+The element \{elementName} was not found in campaign \{campaignName} for cluster \{clusterName}.
+
+==== Description
+When the requested element or device cannot be found within the scope of the specified campaign and cluster.
+
+=== ACCM-AC-0040
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The element \{elementName} never completed last scheduled update, cannot execute rollback.
+
+==== Description
+When a rollback operation is requested for an element, but it cannot be performed because the previous update activity was never successfully completed.
+
+=== ACCM-AC-0054
+
+==== HTTP error code
+409 Conflict
+
+==== Message
+The campaign \{campaignName} cannot execute a rollback in its current state, it must be Error, Canceled,ExecutingRollback or Success and is \{status}
+
+==== Description
+When a rollback operation is triggered on a campaign whose current status does not allow it.
