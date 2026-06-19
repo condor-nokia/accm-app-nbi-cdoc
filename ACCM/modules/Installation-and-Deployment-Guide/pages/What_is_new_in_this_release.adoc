@@ -2,6 +2,6 @@ include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
 
 = What's new in Release {release-number}{prerelease-tag}
 
-* Fixes to bugs reported by Nokia.
+* Fixes to bugs reported by Nokia: FNMS-373404, FNMS-375387, FNMS-375891.
 
 include::ROOT:go-back-component.adoc[Back]
