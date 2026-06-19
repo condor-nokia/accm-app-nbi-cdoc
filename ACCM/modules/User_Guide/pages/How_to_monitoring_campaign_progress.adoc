@@ -165,6 +165,11 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 * RollBackError
 * Canceled
 
+[NOTE]
+====
+Refer to xref:Statuses_Overview.adoc[Statuses Overview] section for more details about Campaigns, Clusters and Elements status.
+====
+
 == REST Error Responses
 .Error response
 [source,json]

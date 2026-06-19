@@ -1,0 +1,51 @@
+include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
+
+= Notifications Integration
+
+== Introduction
+
+{app-short-name} broadcasts real-time asynchronous notifications via Apache Kafka whenever a software management campaign transitions into a new state. This enables decoupled external downstream applications and monitoring systems to track campaign progress without polling the REST API.
+
+=== Kafka Topic Configuration
+
+All campaign lifecycle event messages are published to a central dedicated Kafka topic.
+
+Topic Name::
+The topic name is dynamically constructed at runtime using environmental parameters injected into the container. It follows the naming convention outlined below:
++
+`{helm-release-name}-{pod-instance-name}-{target-topic-name}`
++
+--
+* `helm-release-name` &ndash; Represents the Helm release name deployed for the ACCM Solution.
+* `pod-instance-name` &ndash; Unique identifier of the active POD instance creating the topic, extracted from the `KAFKA_INSTANCE_NAME` environment variable.
+* `target-topic-name` &ndash; Destination topic name defined by the `KAFKA_PRODUCER_TARGET_TOPIC` environment variable (defaults to `CAMPAIGN_STATUS_CHANGE`).
+--
++
+*Example:* `BTOR-AP-CM-KAFKA-CAMPAIGN_STATUS_CHANGE`
+
+Message Format::
+All outbound events are serialized as structured *JSON (JavaScript Object Notation)* payloads.
+
+=== Notification Payload Structure
+
+Each published event contains a standardized JSON envelope that provides the context of the change.
+
+[source,json]
+----
+{
+  "campaign-state-change": {
+    "datetime": "{isoDateTimestamp}",
+    "campaign-name": "{campaignName}",
+    "new-status": "{newStatus}",
+    "old-status": "{oldStatus}",
+    "failure-reason": "{failureReason}"
+  }
+}
+----
+
+[NOTE]
+====
+Refer to xref:Statuses_Overview.adoc[Statuses Overview] section for more details about possible values for new-status and old-status attributes.
+====
+
+include::ROOT:go-back-component.adoc[Back]
