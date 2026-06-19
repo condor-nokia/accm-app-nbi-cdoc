@@ -26,45 +26,80 @@ Path Variable::
 Body::
 The request body must be empty.
 +
-For example:: A GET request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/c1/progress
+For example:: A GET request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/CAMP/progress
 
-=== Response example
+=== Response example for a scheduled campaign
 
 [source, json]
 ----
 {
-    "name": "c1",
-    "status": "NotScheduled",
+    "name": "CAMP",
+    "status": "Scheduled",
     "clusters": [
         {
-            "clusterName": "LSN-FX16.2MF2",
-            "totalElements": 3,
+            "clusterName": "LSN",
+            "totalElements": 10,
             "updatedElements": 0,
-            "status": "NotScheduled",
-            "progress": 0.0,
+            "status": "Scheduled",
+            "progress": 0,
             "elements": [
                 {
-                    "elementType": "Headend",
+                    "elementType": "Spines",
                     "elements": [
                         {
-                            "name": "Subtended-CPLeaf",
-                            "status": "NotScheduled",
-                            "progress": 0.0
+                            "name": "Condor_Spine1",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_Spine2",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_Spine3",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_Spine4",
+                            "status": "Scheduled",
+                            "progress": 0
                         }
                     ]
                 },
                 {
-                    "elementType": "RemoteOLT",
+                    "elementType": "AccLeaves",
                     "elements": [
                         {
-                            "name": "Subtended-MF21",
-                            "status": "NotScheduled",
-                            "progress": 0.0
+                            "name": "Condor_IXRS_1",
+                            "status": "Scheduled",
+                            "progress": 0
                         },
                         {
-                            "name": "Subtended-MF22",
-                            "status": "NotScheduled",
-                            "progress": 0.0
+                            "name": "Condor_IXRS_2",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_3",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_4",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_5",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_6",
+                            "status": "Scheduled",
+                            "progress": 0
                         }
                     ]
                 }
@@ -72,32 +107,402 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
             "executionSteps": [
                 {
                     "name": "Download",
-                    "status": "NotScheduled"
+                    "status": "Scheduled"
                 },
                 {
-                    "name": "Upgrade Headend",
-                    "status": "NotScheduled"
+                    "name": "Upgrade Spine 1",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade Spine 2",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade Spine 3",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade Spine 4",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 1",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 2",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 3",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 4",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 5",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 6",
+                    "status": "Scheduled"
+                }
+            ]
+        },
+        {
+            "clusterName": "LSN.2MF2",
+            "totalElements": 1,
+            "updatedElements": 0,
+            "status": "Scheduled",
+            "progress": 0,
+            "elements": [
+                {
+                    "elementType": "RemoteOLT",
+                    "elements": [
+                        {
+                            "name": "Subtended_MF22",
+                            "status": "Scheduled",
+                            "progress": 0
+                        }
+                    ]
+                }
+            ],
+            "executionSteps": [
+                {
+                    "name": "Download",
+                    "status": "Scheduled"
                 },
                 {
                     "name": "Upgrade RemoteOLT batch 1",
-                    "status": "NotScheduled"
-                },
-                {
-                    "name": "Upgrade RemoteOLT batch 2",
-                    "status": "NotScheduled"
-                },
-                {
-                    "name": "Rollback",
-                    "status": "NotScheduled"
+                    "status": "Scheduled"
                 }
             ]
         }
     ],
-    "totalElements": 3,
+    "totalElements": 11,
     "updatedElements": 0,
-    "progress": 0.0
+    "progress": 0
 }
+----
 
+=== Response example for a executing campaign
+
+[source, json]
+----
+{
+    "name": "CAMP",
+    "status": "Executing",
+    "clusters": [
+        {
+            "clusterName": "LSN",
+            "totalElements": 10,
+            "updatedElements": 0,
+            "status": "Executing",
+            "progress": 0,
+            "elements": [
+                {
+                    "elementType": "Spines",
+                    "elements": [
+                        {
+                            "name": "Condor_Spine1",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_Spine2",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_Spine3",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_Spine4",
+                            "status": "Scheduled",
+                            "progress": 0
+                        }
+                    ]
+                },
+                {
+                    "elementType": "AccLeaves",
+                    "elements": [
+                        {
+                            "name": "Condor_IXRS_1",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_2",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_3",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_4",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_5",
+                            "status": "Scheduled",
+                            "progress": 0
+                        },
+                        {
+                            "name": "Condor_IXRS_6",
+                            "status": "Scheduled",
+                            "progress": 0
+                        }
+                    ]
+                }
+            ],
+            "executionSteps": [
+                {
+                    "name": "Download",
+                    "status": "Executing"
+                },
+                {
+                    "name": "Upgrade Spine 1",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade Spine 2",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade Spine 3",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade Spine 4",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 1",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 2",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 3",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 4",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 5",
+                    "status": "Scheduled"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 6",
+                    "status": "Scheduled"
+                }
+            ]
+        },
+        {
+            "clusterName": "LSN.2MF2",
+            "totalElements": 1,
+            "updatedElements": 0,
+            "status": "Executing",
+            "progress": 0,
+            "elements": [
+                {
+                    "elementType": "RemoteOLT",
+                    "elements": [
+                        {
+                            "name": "Subtended_MF22",
+                            "status": "Scheduled",
+                            "progress": 0
+                        }
+                    ]
+                }
+            ],
+            "executionSteps": [
+                {
+                    "name": "Download",
+                    "status": "Executing"
+                },
+                {
+                    "name": "Upgrade RemoteOLT batch 1",
+                    "status": "Scheduled"
+                }
+            ]
+        }
+    ],
+    "totalElements": 11,
+    "updatedElements": 0,
+    "progress": 0
+}
+----
+
+=== Response example for a success campaign
+
+[source, json]
+----
+{
+    "name": "CAMP",
+    "status": "Success",
+    "clusters": [
+        {
+            "clusterName": "LSN",
+            "totalElements": 10,
+            "updatedElements": 10,
+            "status": "Success",
+            "progress": 100,
+            "elements": [
+                {
+                    "elementType": "Spines",
+                    "elements": [
+                        {
+                            "name": "Condor_Spine1",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_Spine2",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_Spine3",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_Spine4",
+                            "status": "Success",
+                            "progress": 100
+                        }
+                    ]
+                },
+                {
+                    "elementType": "AccLeaves",
+                    "elements": [
+                        {
+                            "name": "Condor_IXRS_1",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_IXRS_2",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_IXRS_3",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_IXRS_4",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_IXRS_5",
+                            "status": "Success",
+                            "progress": 100
+                        },
+                        {
+                            "name": "Condor_IXRS_6",
+                            "status": "Success",
+                            "progress": 100
+                        }
+                    ]
+                }
+            ],
+            "executionSteps": [
+                {
+                    "name": "Download",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade Spine 1",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade Spine 2",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade Spine 3",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade Spine 4",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 1",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 2",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 3",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 4",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 5",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade AccLeaves batch 6",
+                    "status": "Success"
+                }
+            ]
+        },
+        {
+            "clusterName": "LSN.2MF2",
+            "totalElements": 1,
+            "updatedElements": 1,
+            "status": "Success",
+            "progress": 100,
+            "elements": [
+                {
+                    "elementType": "RemoteOLT",
+                    "elements": [
+                        {
+                            "name": "Subtended_MF22",
+                            "status": "Success",
+                            "progress": 100
+                        }
+                    ]
+                }
+            ],
+            "executionSteps": [
+                {
+                    "name": "Download",
+                    "status": "Success"
+                },
+                {
+                    "name": "Upgrade RemoteOLT batch 1",
+                    "status": "Success"
+                }
+            ]
+        }
+    ],
+    "totalElements": 11,
+    "updatedElements": 11,
+    "progress": 100
+}
 ----
 
 ==== Response schemas

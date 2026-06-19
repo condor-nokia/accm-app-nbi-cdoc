@@ -102,6 +102,34 @@ For example - Example 3:: If you want to create a campaign for the cluster "LSN"
 }
 ----
 
+For example - Example 4:: If you want to create a campaign for two clusters, including and excluding elements for different clusters, a POST request with body must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns
++
+[source, json]
+----
+{
+    "name": "CAMP",
+    "softwareMatrixName": "atp_device_only",
+    "clusters": [
+        {
+            "clusterName": "LSN",
+            "excludedElements": [
+                "AccessLeaf-FX229",
+                "CPLeaf-FX228",
+                "AccessLeaf-MF230"
+            ],
+            "includedElements": []
+        },
+        {
+            "clusterName": "LSN.2MF2",
+            "excludedElements": [],
+            "includedElements": [
+                "Subtended_MF22"
+            ]
+        }
+    ]
+}
+----
+
 [NOTE]
 ====
 The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
@@ -164,18 +192,30 @@ Body::
 The request body must contain all the fields that were used in the campaign's creation except for the campaignName field.
 The value of all these fields can be modified. If any field is missing from the body request its value will be 'null'
 +
-For example:: A PUT request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/campaign1
+For example:: A PUT request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/CAMP
 +
 [source, json]
 ----
 {
-    "softwareMatrixName": "atp-st1-swm-device",
-    "downloadDate": "2026-04-17T12:00:00.000Z",
-    "updateDate": "2026-04-17T13:00:00.000Z",
-    "clusters" : [
+    "softwareMatrixName": "atp_device_only",
+    "downloadDate": "2026-06-20T03:00:00",
+    "updateDate": "2026-06-20T03:20:00",
+    "clusters": [
         {
-            "clusterName": "LSN-FX16.2MF2",
-            "excludedElements": ["Subtended-MF22"]
+            "clusterName": "LSN",
+            "excludedElements": [
+                "AccessLeaf-FX229",
+                "CPLeaf-FX228",
+                "AccessLeaf-MF230"
+            ],
+            "includedElements": []
+        },
+        {
+            "clusterName": "LSN.2MF2",
+            "excludedElements": [],
+            "includedElements": [
+                "Subtended_MF22"
+            ]
         }
     ]
 }
@@ -192,11 +232,11 @@ To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc
 [source,json]
 ----
 {
-  "timestamp": {isoDateTimestamp},
-  "operationName": {operationName},
-  "serviceName": {serviceName},
-  "errorCode": {errorCode},
-  "message": {message},
+  "timestamp": "{isoDateTimestamp}",
+  "operationName": "{operationName}",
+  "serviceName": "{serviceName}",
+  "errorCode": "{errorCode}",
+  "message": "{message}",
   "detail": []
 }
 ----
