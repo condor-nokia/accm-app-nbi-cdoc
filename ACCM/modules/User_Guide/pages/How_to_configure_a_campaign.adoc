@@ -170,8 +170,34 @@ Path Variable::
 Body::
 The request body must be empty.
 +
-For example:: A GET request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/campaign1
-
+For example:: A GET request must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns/CAMP
++
+[source, json]
+----
+{
+    "name": "CAMP",
+    "softwareMatrixName": "atp_device_only",
+    "status": "NotScheduled",
+    "clusters": [
+        {
+            "clusterName": "LSN",
+            "excludedElements": [
+                "AccessLeaf-FX229",
+                "CPLeaf-FX228",
+                "AccessLeaf-MF230"
+            ],
+            "includedElements": []
+        },
+        {
+            "clusterName": "LSN.2MF2",
+            "excludedElements": [],
+            "includedElements": [
+                "Subtended_MF22"
+            ]
+        }
+    ]
+}
+----
 [NOTE]
 ====
 The access token of the user must be sent in the request as a Bearer Authorization HTTP Header.
