@@ -56,6 +56,11 @@ The access token of the user must be sent in the request as a Bearer Authorizati
 To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc[REST APIs] section.
 ====
 
+[NOTE]
+====
+When the cancel action is executed, the campaign will remain in "Executing" status until Altiplano effectively aborts the activity in progress. This can take time, and while the process lasts, the "cause" attribute of the campaigns carries the message "The cancellation is being executed".
+====
+
 == Retry
 To retry a campaign using the {app-short-name} REST API, you must execute the following step:
 
