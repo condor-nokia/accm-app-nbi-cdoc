@@ -13,12 +13,12 @@ All campaign lifecycle event messages are published to a central dedicated Kafka
 Topic Name::
 The topic name is dynamically constructed at runtime using environmental parameters injected into the container. It follows the naming convention outlined below:
 +
-`{helm-release-name}-{pod-instance-name}-{target-topic-name}`
+`\{helm-release-name}-\{pod-instance-name}-\{target-topic-name}`
 +
 --
-* `helm-release-name` &ndash; Represents the Helm release name deployed for the ACCM Solution.
-* `pod-instance-name` &ndash; Unique identifier of the active POD instance creating the topic, extracted from the `KAFKA_INSTANCE_NAME` environment variable.
-* `target-topic-name` &ndash; Destination topic name defined by the `KAFKA_PRODUCER_TARGET_TOPIC` environment variable (defaults to `CAMPAIGN_STATUS_CHANGE`).
+* `helm-release-name`: Represents the Helm release name deployed for the ACCM Solution.
+* `pod-instance-name`: Unique identifier of the active POD instance creating the topic, extracted from the `KAFKA_INSTANCE_NAME` environment variable.
+* `target-topic-name`: Destination topic name defined by the `KAFKA_PRODUCER_TARGET_TOPIC` environment variable (defaults to `CAMPAIGN_STATUS_CHANGE`).
 --
 +
 *Example:* `BTOR-AP-CM-KAFKA-CAMPAIGN_STATUS_CHANGE`
