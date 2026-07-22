@@ -181,6 +181,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
     "clusters": [
         {
             "clusterName": "LSN",
+            "apAdditionalInformationURL": "https://100.121.38.81/nokia-altiplano-ac/software-management/#/campaigns/CAMP_LSN",
             "excludedElements": [
                 "AccessLeaf-FX229",
                 "CPLeaf-FX228",
@@ -190,6 +191,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
         },
         {
             "clusterName": "LSN.2MF2",
+            "apAdditionalInformationURL": "https://100.121.38.81/nokia-altiplano-ac/software-management/#/campaigns/CAMP_LSN.2MF2",
             "excludedElements": [],
             "includedElements": [
                 "Subtended_MF22"
