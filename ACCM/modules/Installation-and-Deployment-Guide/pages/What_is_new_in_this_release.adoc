@@ -2,8 +2,6 @@ include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
 
 = What's new in Release {release-number}{prerelease-tag}
 
-* {app-short-name} information schemas has now hyperlinks pointing to the resources inside Altiplano from the ACCM interface
-
-* {app-short-name} information schemas has now more details about the progress of operations of the campaigns, clusters and elements in clusters.
+* {app-short-name} information schemas has now more details about the progress of rollback operations of the campaigns, clusters and elements in clusters.
 
 include::ROOT:go-back-component.adoc[Back]

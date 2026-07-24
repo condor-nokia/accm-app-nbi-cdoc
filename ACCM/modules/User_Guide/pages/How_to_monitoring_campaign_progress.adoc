@@ -440,6 +440,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | total-elements | int | Elements to be updated (sum of all cluster elements)
 | updated-elements | int | Current elements updated (sum of all updated cluster elements)
 | downloaded-elements | int | Current elements downloaded (sum of all downloaded cluster elements)
+| downloaded-elements | int | Current elements rolledback (sum of all rolledback cluster elements)
 | progress | Array<ProgressSchema> | Progress detail for each stage of the upgrade process
 | started-at | date-time | Date and time when the campaign started its execution
 | ended-at | date-time | Date and time when the campaign ended its execution
@@ -455,6 +456,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | totalElements | int | Elements to be updated
 | updatedElements | int | Current elements updated
 | downloaded-elements | int | Current elements downloaded
+| rolledback-elements | int | Current elements rolledback
 | progress | Array<ProgressSchema> | Progress detail for each stage of the upgrade process
 | started-at | date-time | Date and time when the cluster started its execution
 | ended-at | date-time | Date and time when the cluster ended its execution
