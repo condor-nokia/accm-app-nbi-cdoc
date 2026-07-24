@@ -429,9 +429,9 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 }
 ----
 
-==== Response schemas
+== Response schemas
 
-===== CampaignProgressSchema
+=== CampaignProgressSchema
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -447,7 +447,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | clusters | Array<ClusterProgressSchema> | List of associated clusters for the campaign and their current progress
 |===
 
-===== ClusterProgressSchema
+=== ClusterProgressSchema
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -466,7 +466,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 
 |===
 
-===== ClusterElementTypeProgress
+=== ClusterElementTypeProgress
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -474,7 +474,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | elements | Array<ClusterElementProgress> | List of elements (devices or ONTs) belonging to the cluster's elementType.
 |===
 
-===== ClusterElementProgress
+=== ClusterElementProgress
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -485,7 +485,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | operations | Array<OperationSchema> | List of operations with start and end date and time executed on the element
 |===
 
-===== ProgressSchema
+=== ProgressSchema
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -493,7 +493,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | progress | float | Percentage of progress of the operation
 |===
 
-===== ApAdditionalInformationSchema
+=== ApAdditionalInformationSchema
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -501,7 +501,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | url | string | URL to the Altiplano element detail corresponding to this element and operation
 |===
 
-===== OperationSchema
+=== OperationSchema
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -510,7 +510,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | ended-at | date-time | Date and time when the cluster ended its execution
 |===
 
-===== ExecutionStepSchema
+=== ExecutionStepSchema
 [cols="1,1,2", options="header"]
 |===
 | Attribute | Type | Description
@@ -518,7 +518,7 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 | status | Status | Current status of the execution step.
 |===
 
-===== Status (Enum)
+=== Status (Enum)
 *Type:* string
 
 * NotScheduled
