@@ -2,6 +2,6 @@ include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
 
 = What's new in Release {release-number}{prerelease-tag}
 
-* {app-short-name} information schemas has now more details about the progress of rollback operations of the campaigns, clusters and elements in clusters.
+* Clarification regarding the cancellation action and campaign status in Altiplano.
 
 include::ROOT:go-back-component.adoc[Back]

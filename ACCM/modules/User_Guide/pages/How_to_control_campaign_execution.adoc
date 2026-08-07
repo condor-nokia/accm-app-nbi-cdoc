@@ -61,6 +61,13 @@ To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc
 When the cancel action is executed, the campaign will remain in "Executing" status until Altiplano effectively aborts the activity in progress. This can take time, and while the process lasts, the "cause" attribute of the campaigns carries the message "The cancellation is being executed".
 ====
 
+[NOTE]
+====
+A campaign created in ACCM if it is cancelled by the user and if the same campaign is In-progress in Altiplano Software manager then:
+
+* If the operator wants to clean up fully the software campaign ,  delete action has to be performed for the campaign.
+====
+
 == Retry
 To retry a campaign using the {app-short-name} REST API, you must execute the following step:
 
