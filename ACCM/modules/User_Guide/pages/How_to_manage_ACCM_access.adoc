@@ -22,25 +22,67 @@ any {app-short-name} operation through the {app-short-name} REST APIs.
 === Authenticating as an altiplano admin
 The token can be retrieved using the following information:
 
-- Altiplano's admin username
-- Altiplano's admin password
+- Admin username
+- Admin password
+- Client ID
+- Client secret
 
 ==== Get Token using CURL
 
 .Usage
 [source, bash, subs=attributes]
 ----
-curl --location --request POST 'https://IP_ALTIPLANO/nokia-altiplano-ac/rest/auth/login' \
---header 'Authorization: Basic USERNAME:PASSWORD ENCODED IN BASE64' \
---data ''
+curl -k --location 'https://{altiplano-host}/altiplano-sso/realms/master/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=$CLIENT_ID' \
+--data-urlencode 'client_secret=$CLIENT_SECRET' \
+--data-urlencode 'username=$USERNAME' \
+--data-urlencode 'password=$PASSWORD'
 ----
 
 .Example
 [source, bash, subs=attributes]
 ----
-curl --location --request POST 'https://100.121.38.81/nokia-altiplano-ac/rest/auth/login' \
---header 'Authorization: Basic YWRtaW51c2VyOnBhc3N3b3Jk' \
---data ''
+curl -k --location 'https://{altiplano-host}/altiplano-sso/realms/master/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'client_id=ALTIPLANO' \
+--data-urlencode 'client_secret=a9428765-ddc4-485c-8bf1-897f39264eb2' \
+--data-urlencode 'username=adminuser' \
+--data-urlencode 'password=password'
 ----
+
+==== Get Token using Postman
+
+The steps to retrieve a token from Postman are as follows:
+
+. Create new request
+. Go to *Authorization* tab:
++
+image::authenticateSection_obtainToken.png[align="center"]
+
+. Enter the next required data:
++
+--
+- Select the Grand type = "Password credentials".
+- Access Token URL: The Altiplano keycloak token url. For example: https://{altiplano-host}/altiplano-sso/realms/system/protocol/openid-connect/token
+- Client ID: The id of the client in keycloak.
+- Client Secret: The secret of the client. This can be found under the "credentials" section of the client details in keycloak
+- Username: admin's username
+- Password: admin's password
+--
+
+. Click the *Get New Access Token* button
++
+image::authenticateSection_obtainToken2.png[align="center"]
+
+. The generated token was generated. Click the *Use Token*:
++
+image::authenticateSection_obtainToken3.png[align="center"]
+
+. The generated token can be copied from *Token* field.
++
+image::authenticateSection_obtainToken4.png[align="center"]
 
 include::ROOT:go-back-component.adoc[Back]

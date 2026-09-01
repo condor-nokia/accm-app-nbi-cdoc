@@ -43,9 +43,35 @@ Each published event contains a standardized JSON envelope that provides the con
 }
 ----
 
-[NOTE]
-====
-Refer to xref:Statuses_Overview.adoc[Statuses Overview] section for more details about possible values for new-status and old-status attributes.
-====
+[cols="1,1,3", options="header"]
+|===
+|Field |Type |Description
+
+|datetime
+|String
+|Timestamp in ISO 8601 format ({isoDateTimestamp}) indicating when the state change occurred.
+
+|campaign-name
+|String
+|The unique identifier or name of the campaign ({campaignName}).
+
+|new-status
+|String
+|The new state of the campaign after the change ({newStatus}). Refer to the Status Values section for details.
+
+|old-status
+|String
+|The previous state of the campaign prior to the change ({oldStatus}). Refer to the Status Values section for details.
+
+|failure-reason
+|String
+|Provides details about the failure when new-status is Error. For all other status transitions, this field contains an empty string ("").
+|===
+
+==== Status Values
+
+The new-status and old-status fields accept the following values:
+
+include::../partial/campaignStatusTable.adoc[]
 
 include::ROOT:go-back-component.adoc[Back]

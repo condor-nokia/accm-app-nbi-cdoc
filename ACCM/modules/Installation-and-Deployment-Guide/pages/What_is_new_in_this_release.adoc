@@ -2,6 +2,9 @@ include::ROOT:conf/Configuration_properties.adoc[leveloffset=0]
 
 = What's new in Release {release-number}{prerelease-tag}
 
-* Clarification regarding the cancellation action and campaign status in Altiplano.
+* Lifecycle Flowchart: Added a new diagram to the overview page.
+* Statuses Overview: Removed the standalone section and embedded status explanations directly into relevant sections.
+* Authentication Process: Implemented a new mechanism to retrieve tokens from Keycloak.
+* REST API Base URL: Updated the base URL for {app-short-name} endpoints.
 
 include::ROOT:go-back-component.adoc[Back]

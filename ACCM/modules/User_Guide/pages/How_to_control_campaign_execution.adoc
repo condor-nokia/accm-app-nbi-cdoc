@@ -13,6 +13,14 @@ Refer to xref:User_Guide:How_to_manage_ACCM_access.adoc[How to Manage {app-short
 ====
 
 == Manual start
+
+Initiates immediate execution of the campaign, bypassing any previously defined schedule.
+
+[NOTE]
+====
+**Allowed Manual Start States:** `Scheduled`, `NotScheduled`.
+====
+
 To manually start a campaign using the {app-short-name} REST API, you must execute the following step:
 
 . Send a POST request to the following URL:
@@ -35,6 +43,14 @@ To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc
 ====
 
 == Cancel
+
+Aborts the currently active upgrade or rollback tasks in Altiplano and stops the campaign's progression.
+
+[NOTE]
+====
+**Allowed Cancel States:** `Executing`, `ExecutingRollback`.
+====
+
 To cancel a campaign using the {app-short-name} REST API, you must execute the following step:
 
 . Send a CANCEL request to the following URL:
@@ -69,6 +85,14 @@ A campaign created in ACCM if it is cancelled by the user and if the same campai
 ====
 
 == Retry
+
+Re-executes the update sequence specifically targeting the failed or canceled element activities, intelligently skipping already successful elements.
+
+[NOTE]
+====
+**Allowed Retry States:** `Error`, `Canceled`.
+====
+
 To retry a campaign using the {app-short-name} REST API, you must execute the following step:
 
 . Send a POST request to the following URL:
@@ -91,7 +115,15 @@ To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc
 ====
 
 == Rollback
-To rollback a campaign using the {app-short-name} REST API, you must execute the following step:
+
+Reverts a specific element back to its prior stable version. If a device is selected under a "Device and all its ONTs" matrix, all subtended ONTs are rolled back automatically.
+
+[NOTE]
+====
+**Allowed Rollback States:** Campaign (`Success`, `Error`, `Canceled`, `ExecutingRollback`) AND Element (`Success`).
+====
+
+To rollback a campaign element using the {app-short-name} REST API, you must execute the following step:
 
 . Send a POST request to the following URL:
 link:https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/clusters/<CLUSTER_NAME>/elements/<ELEMENT_NAME>/rollback[https://{altiplano-host}/{accm-api-context}/campaign-manager-api/campaigns/<CAMPAIGN_NAME>/clusters/<CLUSTER_NAME>/elements/<ELEMENT_NAME>/rollback,window=_blank]

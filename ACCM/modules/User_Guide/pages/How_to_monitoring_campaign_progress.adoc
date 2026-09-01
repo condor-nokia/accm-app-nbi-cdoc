@@ -531,10 +531,20 @@ For example:: A GET request must be sent to the following URL: https://{ip-host-
 * RollBackError
 * Canceled
 
-[NOTE]
-====
-Refer to xref:Statuses_Overview.adoc[Statuses Overview] section for more details about Campaigns, Clusters and Elements status.
-====
+.Campaign States
+The campaign status provides a high-level overview of the entire automated update process:
+
+include::../partial/campaignStatusTable.adoc[]
+
+.Cluster States
+Their statuses are calculated dynamically based on non-excluded components.
+
+include::../partial/clusterStatusTable.adoc[]
+
+.Element States
+States that an element can transit through during the lifecycle of a software update campaign. An element’s state is dynamically determined and tracked within the system to ensure correct execution, orchestration control, and visibility.
+
+include::../partial/elementStatusTable.adoc[]
 
 == REST Error Responses
 .Error response

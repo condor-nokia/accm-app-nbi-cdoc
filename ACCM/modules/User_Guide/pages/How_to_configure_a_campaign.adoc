@@ -45,8 +45,10 @@ The request must contain the following JSON body:
 - *clusters*: List of clusters to include in the campaign. Must select at least one. +
 Each cluster element is composed by: +
 * *clusterName*: _(string)_ Name of the cluster
-* *excludedElements (optional)*: _(array)_ List of specific element names to exclude from the update within this cluster. Only applicable when selected Target solution type is Device or Devices and all its ONTs.
-* *includedElements (optional)*: _(array)_ List of names of the elements whose ONTs will be updated. Only applicable when selected Target solution type is ONTs only. (To upgrade all ONTs under the cluster, this param must not be included).
+* *excludedElements (optional)*: _(array)_ List of specific element names to exclude from the update within this cluster.
+* *includedElements (optional)*: _(array)_ List of specific element names to include on the update within this cluster.
++
+NOTE: excludedElements and includedElements are mutually exclusive options.
 
 For example - Example 1:: If you want to create a campaign for the cluster "LSN", a POST request with body must be sent to the following URL: https://{ip-host-example}/{accm-api-context}/campaigns
 +
@@ -137,6 +139,14 @@ To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc
 ====
 
 == Delete Campaign
+
+Deleting a campaign completely removes it from the local database, scheduler, and corresponding Altiplano modules. Deletion is strictly blocked if the campaign is actively running.
+
+[NOTE]
+====
+**Allowed Delete States:** `Scheduled`, `NotScheduled`, `Success`, `Canceled`, `Error`.
+====
+
 To delete a campaign using the {app-short-name} REST API, you must execute the following step:
 
 . Send a DELETE request to the following URL:
@@ -207,6 +217,14 @@ To retrieve a token, follow the steps in the xref:How_to_manage_ACCM_access.adoc
 ====
 
 == Edit a Campaign
+
+Editing is restricted once the campaign transitions to `Executing` or any terminal state to ensure orchestration consistency.
+
+[NOTE]
+====
+Campaign details can only be edited when the campaign is in `Scheduled` or `Not Scheduled` state.
+====
+
 To edit a campaign using the {app-short-name} REST API, you must execute the following step:
 
 . Send a PUT request to the following URL:
