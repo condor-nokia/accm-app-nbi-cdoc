@@ -41,18 +41,6 @@ curl -k --location 'https://{altiplano-host}/altiplano-sso/realms/master/protoco
 --data-urlencode 'password=$PASSWORD'
 ----
 
-.Example
-[source, bash, subs=attributes]
-----
-curl -k --location 'https://{altiplano-host}/altiplano-sso/realms/master/protocol/openid-connect/token' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'grant_type=password' \
---data-urlencode 'client_id=ALTIPLANO' \
---data-urlencode 'client_secret=a9428765-ddc4-485c-8bf1-897f39264eb2' \
---data-urlencode 'username=adminuser' \
---data-urlencode 'password=password'
-----
-
 ==== Get Token using Postman
 
 The steps to retrieve a token from Postman are as follows:
