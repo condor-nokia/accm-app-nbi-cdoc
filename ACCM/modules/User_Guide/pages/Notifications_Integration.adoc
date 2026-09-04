@@ -72,6 +72,6 @@ Each published event contains a standardized JSON envelope that provides the con
 
 The new-status and old-status fields accept the following values:
 
-include::../partial/campaignStatusTable.adoc[]
+include::partial$campaignStatusTable.adoc[]
 
 include::ROOT:go-back-component.adoc[Back]
